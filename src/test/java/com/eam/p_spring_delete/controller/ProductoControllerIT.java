@@ -49,30 +49,26 @@ public class ProductoControllerIT {
     private ProductoRepository productoRepository;
 
     @BeforeEach
-    void cleanDB() {
+    void prepararDB() {
         productoRepository.deleteAll();
-    }
-
-    @BeforeEach
-    void setUp() {
         producto = new Producto(null, "P001", "Camisa", 50000.0, 10);
+        producto = productoRepository.save(producto);
     }
 
     @Test
     void eliminarProducto_Existente_DeberiaRetornar200() throws Exception {
-        mockMvc.perform(post("/api/productos/eliminar")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(producto)))
-                .andExpect(status().isOk());
-
         mockMvc.perform(delete("/api/productos/eliminar/P001"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Producto eliminado exitosamente."));
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.mensaje").value("Producto eliminado exitosamente."))
+            .andExpect(jsonPath("$.codigo").value("P001"));
+
     }
 
     @Test
     void eliminarProducto_NoExistente_DeberiaRetornar404() throws Exception {
         mockMvc.perform(delete("/api/productos/eliminar/NO_EXISTE"))
-                .andExpect(status().isNotFound());
+            .andExpect(status().isNotFound())
+            .andExpect(content().string("No se encontró el producto con el código proporcionado"));
+
     }
 }
