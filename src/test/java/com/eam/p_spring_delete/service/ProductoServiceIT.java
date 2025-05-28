@@ -1,7 +1,7 @@
-package com.eam.p_spring_update.service;
+package com.eam.p_spring_delete.service;
 
-import com.eam.p_spring_update.entity.Producto;
-import com.eam.p_spring_update.repository.ProductoRepository;
+import com.eam.p_spring_delete.entity.Producto;
+import com.eam.p_spring_delete.repository.ProductoRepository;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,52 +48,31 @@ class ProductoServiceIT {
         productoRepository.deleteAll();
     }
 
-     @BeforeEach
+    @BeforeEach
     void setUp() {
         producto = new Producto(null, "P001", "Camisa", 50000.0, 10);
     }
 
-   
-
-
     @Test
-    @Order(7)
-    void actualizarProducto_DeberiaActualizarCorrectamente() {
-        // Crear el producto directamente con el repositorio
-        Producto productoInicial = new Producto(null, "A001", "Camisa", 50000.0, 10);
+    @Order(1)
+    void eliminarProducto_DeberiaEliminarCorrectamente() {
+        // Crear producto directamente con el repositorio
+        Producto productoInicial = new Producto(null, "E001", "Camisa", 50000.0, 10);
         productoRepository.save(productoInicial);
 
-        Producto actualizado = new Producto(null, "A001", "Camisa actualizada", 60000.0, 15);
-        Producto resultado = productoService.actualizarProducto("A001", actualizado);
+        // Ejecutar el método a probar
+        productoService.eliminarProducto("E001");
 
-        assertEquals("Camisa actualizada", resultado.getNombre());
-        assertEquals(60000.0, resultado.getPrecio());
-        assertEquals(15, resultado.getCantidad());
+        // Verificar directamente con el repositorio que el producto fue eliminado
+        assertFalse(productoRepository.findByCodigo("E001").isPresent(),
+                "El producto debería haber sido eliminado");
     }
 
     @Test
-    @Order(8)
-    void actualizarProducto_DeberiaFallarSiCodigoNoCoincide() {
-        // Crear el producto directamente con el repositorio
-        Producto productoInicial = new Producto(null, "A002", "Camisa", 50000.0, 10);
-        productoRepository.save(productoInicial);
-
-        Producto conCodigoCambiado = new Producto(null, "OTRO", "Modificado", 70000.0, 5);
-
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> {
-            productoService.actualizarProducto("A002", conCodigoCambiado);
-        });
-
-        assertEquals("No se permite modificar el código del producto", ex.getMessage());
-    }
-
-    @Test
-    @Order(9)
-    void actualizarProducto_DeberiaFallarSiNoExiste() {
-        Producto producto = new Producto(null, "NOHAY", "Nada", 10000.0, 1);
-
+    @Order(2)
+    void eliminarProducto_DeberiaFallarSiNoExiste() {
         Exception ex = assertThrows(NoSuchElementException.class, () -> {
-            productoService.actualizarProducto("NOHAY", producto);
+            productoService.eliminarProducto("X999");
         });
 
         assertEquals("No se encontró el producto con el código proporcionado", ex.getMessage());

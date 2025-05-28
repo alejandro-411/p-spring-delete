@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>com.eam</groupId>
-    <artifactId>p_spring_update</artifactId>
+    <artifactId>p_spring_delete</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>p_spring_update</name>
+    <name>p_spring_delete</name>
     <description>Parcial 3 de contenedores</description>
 
     <properties>

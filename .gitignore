@@ -4,9 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 backups/
-/k8s/update/update-secrets.yml
-/k8s/update/dockerhub-secrets.yml
-p-spring-update/k8s/update/update-secrets.yml
+/k8s/delete/delete-secrets.yml
+/k8s/delete/dockerhub-secrets.yml
+p-spring-delete/k8s/delete/delete-secrets.yml
 
 ### STS ###
 .apt_generated

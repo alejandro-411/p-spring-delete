@@ -1,6 +1,6 @@
-package com.eam.p_spring_update.repository;
+package com.eam.p_spring_delete.repository;
 
-import com.eam.p_spring_update.entity.Producto;
+import com.eam.p_spring_delete.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     // Busca un producto por su código único
     Optional<Producto> findByCodigo(String codigo);
+    // Elimina un producto por su código
+    void deleteByCodigo(String codigo);
 
 }

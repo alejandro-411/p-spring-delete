@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: update-replicaset
-  namespace: p-spring-update
+  name: delete-replicaset
+  namespace: p-spring-delete
   labels:
-    app: update-product
+    app: delete-product
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: update-product
+      app: delete-product
   template:
     metadata:
       labels:
-        app: update-product
+        app: delete-product
     spec:
       nodeSelector:
         workload: update
@@ -21,9 +21,9 @@ spec:
         - name: dockerhub-secret
       containers:
         - name: update
-          image: alejandro411/p_spring_update:latest
+          image: alejandro411/p_spring_delete:latest
           ports:
             - containerPort: 8080
           envFrom:
             - secretRef:
-                name: maria-update-secret
+                name: maria-delete-secret

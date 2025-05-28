@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: update-pod
-  namespace: p-spring-update
+  name: delete-pod
+  namespace: p-spring-delete
   labels:
-    app: update-product
+    app: delete-product
 spec:
   nodeSelector:
     workload: update
   imagePullSecrets:
     - name: dockerhub-secret
   containers:
-    - name: update-container
-      image: alejandro411/p_spring_update:latest
+    - name: delete-container
+      image: alejandro411/p_spring_delete:latest
       ports:
         - containerPort: 8080
       envFrom:
         - secretRef:
-            name: maria-update-secret
+            name: maria-delete-secret

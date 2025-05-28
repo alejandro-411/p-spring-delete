@@ -1,7 +1,7 @@
-package com.eam.p_spring_update.controller;
+package com.eam.p_spring_delete.controller;
 
-import com.eam.p_spring_update.entity.Producto;
-import com.eam.p_spring_update.repository.ProductoRepository;
+import com.eam.p_spring_delete.entity.Producto;
+import com.eam.p_spring_delete.repository.ProductoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,6 @@ import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -58,33 +57,22 @@ public class ProductoControllerIT {
     void setUp() {
         producto = new Producto(null, "P001", "Camisa", 50000.0, 10);
     }
-   
+
     @Test
-    void actualizarProducto_DeberiaRetornar200() throws Exception {
-        mockMvc.perform(post("/api/productos/crear")
+    void eliminarProducto_Existente_DeberiaRetornar200() throws Exception {
+        mockMvc.perform(post("/api/productos/eliminar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(producto)))
                 .andExpect(status().isOk());
 
-        producto.setNombre("Camisa actualizada");
-        producto.setPrecio(55000.0);
-        producto.setCantidad(15);
-
-        mockMvc.perform(put("/api/productos/actualizar/P001")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(producto)))
+        mockMvc.perform(delete("/api/productos/eliminar/P001"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombre").value("Camisa actualizada"));
+                .andExpect(content().string("Producto eliminado exitosamente."));
     }
 
     @Test
-    void actualizarProducto_CodigoDiferente_DeberiaRetornar400() throws Exception {
-        producto.setCodigo("OTRO");
-
-        mockMvc.perform(put("/api/productos/actualizar/P001")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(producto)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("No se permite modificar el código del producto")));
+    void eliminarProducto_NoExistente_DeberiaRetornar404() throws Exception {
+        mockMvc.perform(delete("/api/productos/eliminar/NO_EXISTE"))
+                .andExpect(status().isNotFound());
     }
 }

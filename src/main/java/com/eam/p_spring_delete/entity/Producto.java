@@ -1,4 +1,4 @@
-package com.eam.p_spring_update.entity;
+package com.eam.p_spring_delete.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
