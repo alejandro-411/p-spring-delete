@@ -10,7 +10,7 @@ on:
 env:
   REGISTRO: ghcr.io
   REPO_NOMBRE_LOWER: alejandro-411/p-spring-delete
-  DOCKERHUB_REPO: alejandro-411/p-spring-delete
+  DOCKERHUB_REPO: alejandro_411/p_spring_delete
 
 jobs:
   test-build-push:
